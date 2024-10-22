@@ -9,6 +9,8 @@ badges:
 ## Overview
 
 - **BREAKING**: When watching an array, the callback will only trigger when the array is replaced. If you need to trigger on mutation, the `deep` option must be specified.
+  - In Vue 3.5+, `deep: 1` should be used, which will trigger on array replacement and array mutation.
+  - Prior to Vue 3.5, `deep: true` can be used, but it will also trigger on deep changes in array elements.
 
 ## 3.x Syntax
 
@@ -20,10 +22,17 @@ watch: {
     handler(val, oldVal) {
       console.log('book list changed')
     },
-    deep: true
+    deep: 1 // Vue 3.5+
+    deep: true // Vue 3.0 - 3.4
   },
 }
 ```
+
+:::warning 
+
+In versions prior to Vue 3.5, watches don't allow setting the [max traversal depth](https://vuejs.org/guide/essentials/watchers.html#deep-watchers), so you're stuck with `deep: true`, which will also trigger the callback on deep modification of array elements.
+
+:::
 
 ## Migration Strategy
 
